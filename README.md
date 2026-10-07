@@ -8,8 +8,8 @@
 
 | 쓰는 컴퓨터 | 받을 파일 | 용량 |
 |---|---|---|
-| 맥 (macOS 12 이상) | [`DesktopMof_1.0.1_universal.dmg`](https://github.com/Kim-anika/desktop-mof/releases/download/v1.0.1/DesktopMof_1.0.1_universal.dmg) | 5.0MB |
-| 윈도우 (10 / 11) | [`DesktopMof_1.0.1_x64-setup.exe`](https://github.com/Kim-anika/desktop-mof/releases/download/v1.0.1/DesktopMof_1.0.1_x64-setup.exe) | 2.4MB |
+| 맥 (macOS 12 이상) | [`DesktopMof_1.0.1_universal.dmg`](https://github.com/desktopmof/desktopmof.github.io/releases/download/v1.0.1/DesktopMof_1.0.1_universal.dmg) | 5.0MB |
+| 윈도우 (10 / 11) | [`DesktopMof_1.0.1_x64-setup.exe`](https://github.com/desktopmof/desktopmof.github.io/releases/download/v1.0.1/DesktopMof_1.0.1_x64-setup.exe) | 2.4MB |
 
 맥은 `.dmg`를 열고 **DesktopMof**을 `응용 프로그램` 폴더로 끌어다 놓으세요.
 윈도우는 `.exe`를 더블클릭하면 설치됩니다.
