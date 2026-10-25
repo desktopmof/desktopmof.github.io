@@ -10,7 +10,7 @@
 | 쓰는 컴퓨터 | 받을 파일 | 용량 |
 |---|---|---|
 | 맥 (macOS 12 이상) | [`DesktopMof_1.0.2_universal.dmg`](https://github.com/desktopmof/desktopmof.github.io/releases/download/v1.0.2/DesktopMof_1.0.2_universal.dmg) | 5.0MB |
-| 윈도우 (10 / 11) | [`DesktopMof_1.0.1_x64-setup.exe`](https://github.com/desktopmof/desktopmof.github.io/releases/download/v1.0.1/DesktopMof_1.0.1_x64-setup.exe) | 2.4MB |
+| 윈도우 (10 / 11) | [`DesktopMof_1.0.2_x64-setup.exe`](https://github.com/desktopmof/desktopmof.github.io/releases/download/v1.0.2/DesktopMof_1.0.2_x64-setup.exe) | 2.4MB |
 
 맥은 `.dmg`를 열고 **DesktopMof**을 `응용 프로그램` 폴더로 끌어다 놓으세요.
 윈도우는 `.exe`를 더블클릭하면 설치됩니다.
@@ -65,9 +65,8 @@
 
 - 배포 파일에는 개발자의 개인 이름 설정을 포함하지 않습니다. 같은 종류의 캐릭터를 여러 마리 불러도 이름은 공통입니다.
 - 이름은 컴퓨터 안에 저장하며, 앱이 이름이나 커서 위치를 외부 서버로 전송하지 않습니다.
-- Mac 1.0.2에서는 화면이 사용할 수 있는 내부 권한과 불러올 수 있는 프로그램·이미지의 범위를 줄였습니다.
+- Mac·Windows 1.0.2에서는 화면이 사용할 수 있는 내부 권한과 불러올 수 있는 프로그램·이미지의 범위를 줄였습니다.
 - 카메라·마이크·화면 녹화, 로그인이나 사용 통계 수집 기능은 없습니다.
-- 현재 Windows 다운로드는 기존 1.0.1입니다. Mac 1.0.2의 보안 변경이 적용된 Windows 버전은 아직 배포하지 않았습니다.
 
 ## 잘 안 될 때
 
