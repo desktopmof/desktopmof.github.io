@@ -207,6 +207,7 @@
   /* ボタンはモフのカードと同じクリーム地に置き、珊瑚は丸い矢印バッジに使う。
      カード（角24px）と見分けがつくよう、角はすこし小さく16px。 */
   .dl {
+    position: relative;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
@@ -228,6 +229,25 @@
     box-shadow: 0 1px 0 #fff inset, 0 16px 28px -14px rgba(190, 130, 40, .45);
   }
   .dl:active { transform: translateY(0); }
+  .dl.is-current {
+    background: #fff0e9;
+    border-color: var(--coral);
+  }
+  .os-badge {
+    display: none;
+    position: absolute;
+    top: -10px;
+    left: 18px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--coral);
+    color: var(--ink);
+    font-size: 10.5px;
+    font-weight: 700;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+  .dl.is-current .os-badge { display: block; }
   .dl .arrow {
     width: 34px;
     height: 34px;
@@ -305,6 +325,33 @@
     gap: clamp(20px, 4vw, 34px);
     align-items: start;
   }
+  .os-switch {
+    display: inline-flex;
+    gap: 4px;
+    margin-bottom: 18px;
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+  }
+  .os-switch button {
+    border: 0;
+    border-radius: 999px;
+    padding: 8px 22px;
+    background: transparent;
+    color: var(--ink-soft);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+  .os-switch button[aria-selected="true"] {
+    background: #fbdcd2;
+    color: var(--ink);
+  }
+  .os-grid.is-tabbed { grid-template-columns: minmax(0, 1fr); }
+  .os-switch[hidden], .os[hidden] { display: none; }
   .os {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -517,6 +564,7 @@
     <div class="downloads">
       <!-- ▼ ここにダウンロードURLを貼ってください -->
       <a class="dl" id="dl-mac" href="https://github.com/desktopmof/desktopmof.github.io/releases/download/v1.0.3/DesktopMof_1.0.3_universal.dmg" download>
+        <span class="os-badge">このパソコン向け</span>
         <span class="arrow" aria-hidden="true"><span>↓</span></span>
         <span class="dl-text">
           <span class="dl-title">Mac版をダウンロード</span>
@@ -525,6 +573,7 @@
         </span>
       </a>
       <a class="dl" id="dl-win" href="https://github.com/desktopmof/desktopmof.github.io/releases/download/v1.0.3/DesktopMof_1.0.3_x64-setup.exe" download>
+        <span class="os-badge">このパソコン向け</span>
         <span class="arrow" aria-hidden="true"><span>↓</span></span>
         <span class="dl-text">
           <span class="dl-title">Windows版をダウンロード</span>
@@ -540,8 +589,12 @@
       <h2>はじめて開くときの確認について</h2>
       <p class="section-note">このアプリはOSで発行元を確認できる配布用署名や、Appleの公証を取得していないため、確認画面が出ることがあります。このページのリンクから入手したファイルであることを確かめて、開くか判断してください。</p>
 
-      <div class="os-grid">
-        <div class="os">
+      <div class="os-switch" id="install-os-tabs" role="tablist" aria-label="インストールするパソコン" hidden>
+        <button type="button" id="guide-tab-mac" role="tab" aria-controls="guide-mac" aria-selected="false" tabindex="-1" data-guide="mac">Mac</button>
+        <button type="button" id="guide-tab-win" role="tab" aria-controls="guide-win" aria-selected="false" tabindex="-1" data-guide="win">Windows</button>
+      </div>
+      <div class="os-grid" id="install-guides">
+        <div class="os" id="guide-mac">
           <h3>Macをお使いのかた</h3>
           <span class="count">5ステップ</span>
           <!-- 欧文（.dmg など）の前後だけアキを入れる。和文どうしはベタ組みで、
@@ -556,7 +609,7 @@
           <p class="aside">詳しくは<a href="https://support.apple.com/ja-jp/102445">Apple公式の案内</a>もご確認ください。管理されたパソコンでは、この操作が使えない場合があります。</p>
         </div>
 
-        <div class="os">
+        <div class="os" id="guide-win">
           <h3>Windowsをお使いのかた</h3>
           <span class="count">4ステップ</span>
           <!-- 押すボタンは、配布中の 1.0.3 の .exe から取りだした表示文字列そのまま（英語）。
@@ -645,6 +698,51 @@
 </footer>
 
 <script>
+  /* OSの判定はブラウザー内だけで行う。スマホ・不明なOSでは両方の案内を残す。 */
+  (function () {
+    var agent = navigator.userAgent || '';
+    var platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+    var mobile = /Android|iPhone|iPad|iPod/i.test(agent) || (/Mac/i.test(platform) && navigator.maxTouchPoints > 1);
+    var os = mobile ? null : /Win/i.test(platform + ' ' + agent) ? 'win' : /Mac/i.test(platform + ' ' + agent) ? 'mac' : null;
+    if (!os) return;
+
+    document.getElementById('dl-' + os).classList.add('is-current');
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('#install-os-tabs button'));
+    tabs.forEach(function (tab) {
+      var panel = document.getElementById('guide-' + tab.dataset.guide);
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', tab.id);
+      panel.tabIndex = 0;
+    });
+
+    function showGuide(next, focus) {
+      tabs.forEach(function (tab) {
+        var selected = tab.dataset.guide === next;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+        document.getElementById('guide-' + tab.dataset.guide).hidden = !selected;
+        if (selected && focus) tab.focus();
+      });
+    }
+
+    tabs.forEach(function (tab, index) {
+      tab.addEventListener('click', function () { showGuide(tab.dataset.guide, false); });
+      tab.addEventListener('keydown', function (event) {
+        var next;
+        if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+        else if (event.key === 'ArrowLeft') next = (index + tabs.length - 1) % tabs.length;
+        else if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = tabs.length - 1;
+        else return;
+        event.preventDefault();
+        showGuide(tabs[next].dataset.guide, true);
+      });
+    });
+    showGuide(os, false);
+    document.getElementById('install-guides').classList.add('is-tabbed');
+    document.getElementById('install-os-tabs').hidden = false;
+  })();
+
   /* ヒーローのモフは、アプリの中と同じように反応する。
      ・カードに近づくと、うれしい顔になる（アプリのギャラリーと同じ挙動）
      ・カーソルのほうへ少しだけ寄る
