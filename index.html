@@ -69,6 +69,11 @@
     line-height: 1.85;
     font-weight: 500;
     -webkit-font-smoothing: antialiased;
+    /* 文章をドラッグで選んでコピーできないようにする。スマホの長押しメニューも出さない。
+       右クリック・持ち出し・コピーは下のスクリプトで止める */
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
   }
   img { max-width: 100%; -webkit-user-drag: none; }
   a { color: inherit; }
@@ -712,6 +717,12 @@
 </footer>
 
 <script>
+  /* 右クリックのメニュー、ドラッグでの持ち出し、文章の選択とコピーを止める。
+     リンクとボタンは、クリックでもキーボードでもそのまま使える */
+  ['contextmenu', 'dragstart', 'selectstart', 'copy', 'cut'].forEach(function (type) {
+    document.addEventListener(type, function (e) { e.preventDefault(); });
+  });
+
   /* OSの判定はブラウザー内だけで行う。スマホ・不明なOSでは両方の案内を残す。 */
   (function () {
     var agent = navigator.userAgent || '';
